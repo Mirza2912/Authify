@@ -3,6 +3,7 @@ import Home from "./Pages/Home";
 import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
 import Navbar from "./Components/Navbar";
+import OptVerification from "./Pages/OptVerification";
 
 export default function App() {
   return (
@@ -13,6 +14,10 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
+          <Route
+            path="/register/otp-verification/:email/:phone"
+            element={<OptVerification />}
+          />
         </Routes>
       </div>
     </BrowserRouter>

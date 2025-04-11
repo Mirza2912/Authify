@@ -1,16 +1,35 @@
 import { FaUser, FaEnvelope, FaLock, FaPhone } from "react-icons/fa";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../store/User/userSliceReducers";
+import { toast } from "react-toastify";
+import { clearError } from "../store/User/userSlice";
 
 const Register = () => {
+  const Dispatch = useDispatch();
+  const Navigate = useNavigate();
+
+  //fetching state from redux store
+  const { isLoading, error, isVerified, tempUser } = useSelector(
+    (state) => state.auth
+  );
+
+  // console.log(tempUser && tempUser);
+
   // State hooks for form data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
-    avatar: null,
   });
+
+  const [avatar, setAvatar] = useState("/src/assets/profile.jpg"); //default avatar
+  formData.avatar = avatar; //set avatar = avatar mean after upload on cloudinary
+  //for showing images which user select avatar
+  const [preview, setPreview] = useState("/src/assets/profile.jpg");
+  // console.log(formData.avatar);
 
   // Handle input change
   const handleChange = (e) => {
@@ -20,11 +39,57 @@ const Register = () => {
 
   // Handle image file input
   const handleAvatarChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setFormData({ ...formData, avatar: URL.createObjectURL(file) });
+    // Check if a file is selected
+    const reader = new FileReader();
+
+    // Check if the file is an image and has a valid size
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setPreview(reader.result);
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  //Register Form handler
+  const registerFormHandler = (e) => {
+    e.preventDefault();
+    //dispatch for registration
+    Dispatch(registerUser(formData));
+
+    if (tempUser) {
+      //when register success then clear register data
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+        avatar: "/src/assets/profile.jpg",
+      });
     }
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error); //show error message
+      Dispatch(clearError());
+    }
+
+    if (tempUser) {
+      //if user is temp then navigate to otp page
+      Navigate(
+        `/register/otp-verification/${tempUser.email}/${tempUser.phone}`
+      );
+    }
+
+    //if user already verified
+    if (isVerified) {
+      toast.info("User Already verified");
+      Navigate("/");
+    }
+  }, [error, tempUser, Navigate, Dispatch, isVerified]);
 
   return (
     <section className="flex flex-col lg:flex-row justify-center items-center text-center text-navText bg-gradient-to-br from-primary via-accent to-primaryLight relative min-h-screen">
@@ -44,7 +109,7 @@ const Register = () => {
 
         {/* Right Side Form Section */}
         <div className="lg:w-1/2 w-full max-w-md bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl shadow-2xl">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={registerFormHandler}>
             {/* Name */}
             <div className="relative">
               <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 text-lg" />
@@ -111,20 +176,14 @@ const Register = () => {
                 className="w-full pl-4  py-2 rounded-md bg-white/10 text-white cursor-pointer placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
               >
                 <div className="flex items-center">
-                  {formData.avatar ? (
+                  {preview && (
                     <img
-                      src={formData.avatar}
-                      alt="Avatar"
-                      className="w-12 h-12 rounded-full mr-4"
+                      src={preview}
+                      alt="Avatar Preview"
+                      className="w-12 h-12 object-cover rounded-full shadow-md mr-2"
                     />
-                  ) : (
-                    <div className="w-10 h-10 bg-white/20 rounded-full mr-4 flex justify-center items-center text-center">
-                      <span className="text-accent text-center">+</span>
-                    </div>
                   )}
-                  <span className="text-white/60">
-                    {formData.avatar ? "Change Avatar" : "Select Avatar"}
-                  </span>
+                  <span className="text-white/60"> Avatar</span>
                 </div>
               </label>
             </div>
@@ -132,9 +191,12 @@ const Register = () => {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full py-3 bg-accent text-nevText rounded-md font-semibold text-lg transition hover:bg-primary hover:scale-105 shadow-lg hover:text-accent hover:cursor-pointer"
+              disabled={isLoading}
+              className={`w-full py-3 text-sm bg-accent text-nevText rounded-md font-semibold  transition hover:bg-primary hover:scale-105 shadow-lg hover:text-accent hover:cursor-pointer ${
+                isLoading && "opacity-50"
+              }`}
             >
-              Register
+              {isLoading && isLoading === true ? "Registering..." : "Register"}
             </button>
           </form>
 

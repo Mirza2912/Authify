@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import { User } from "../Models/user.model.js";
 // Function to check if email is valid using EmailValidation.io
 async function isEmailValid(email) {
-  console.log(`Validating email: ${email}`);
+  // console.log(`Validating email: ${email}`);
 
   // my api key for emailValidatio.io
   const EMAIL_VALIDATION_API_KEY = process.env.EMAIL_VALIDATION_API_KEY;
@@ -19,20 +19,20 @@ async function isEmailValid(email) {
     // response from api calling
     let res = await fetch(url);
 
-    console.log("Response of api call : ", res);
+    // console.log("Response of api call : ", res);
 
     //convert response to proper json object
     let result = await res.json();
 
-    console.log("Result of api call : ", result);
+    // console.log("Result of api call : ", result);
 
-    console.log(result);
+    // console.log(result);
 
-    console.log("Email validation result:", result.state);
+    // console.log("Email validation result:", result.state);
 
     return result.state;
   } catch (error) {
-    console.error(`Error validating email ${email}:`, error);
+    // console.error(`Error validating email ${email}:`, error);
     return false; // Return false if there's an error in the request
   }
 }
@@ -93,15 +93,15 @@ async function sendVerificationCode(
 //user registration
 const userRegistration = AsyncHandler(async (req, res, next) => {
   const { name, email, password, avatar, phone } = req.body;
-  console.log(name, password, email, avatar, phone);
+  // console.log(name, password, email, avatar, phone);
 
-  console.log(req.files);
+  // console.log(req.files);
 
   //checking data comes or not
   if (
     [name, email, password, avatar, phone].some((field) => field?.trim() === "")
   ) {
-    console.log("❌ Missing required fields!");
+    // console.log("❌ Missing required fields!");
     return next(new ApiError(`All fields are required...!`, 400));
   }
 
@@ -113,7 +113,7 @@ const userRegistration = AsyncHandler(async (req, res, next) => {
 
   //checking if phone number is valid  means
   if (!verifyPhone(phone)) {
-    console.log("❌ Invalid phone number.");
+    // console.log("❌ Invalid phone number.");
 
     return next(new ApiError("Please enter a valid phone number", 400));
   }
@@ -121,14 +121,14 @@ const userRegistration = AsyncHandler(async (req, res, next) => {
   try {
     //check email is valid or not
     const isEmailValidResponse = await isEmailValid(email);
-    console.log("Email is invalid...!", isEmailValidResponse);
+    // console.log("Email is invalid...!", isEmailValidResponse);
 
     //if email is not valid
     if (isEmailValidResponse !== "deliverable") {
       return next(new ApiError("Email is not valid...!", 404));
     }
 
-    console.log("before upload image");
+    // console.log("before upload image");
 
     //upload image to coludinary
     const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
@@ -136,25 +136,25 @@ const userRegistration = AsyncHandler(async (req, res, next) => {
       width: 150,
       crop: "scale",
     });
-    console.log(myCloud);
+    // console.log(myCloud);
 
     //in this i will check email is valid or not using emailvalidation.io api
     //Checking user already exist or not
     const isUserExist = await User.findOne({ email });
-    console.log(isUserExist);
+    // console.log(isUserExist);
 
     //check is verified user exist or not
     if (isUserExist && isUserExist.accountVerified) {
-      console.log("❌ User already exists and is verified.");
+      // console.log("❌ User already exists and is verified.");
       return next(new ApiError("User already exists", 400));
     }
 
     // If the user exists but isn't verified, increment their registration attempts
     if (isUserExist && !isUserExist.accountVerified) {
-      console.log("❌ User exists but is NOT verified.");
+      // console.log("❌ User exists but is NOT verified.");
 
       if (isUserExist.registrationAttempts >= 2) {
-        console.log("❌ Too many registration attempts.");
+        // console.log("❌ Too many registration attempts.");
         return next(
           new ApiError(
             "You have exceeded the maximum number of registration attempts. Please try again after one hour.",
@@ -169,14 +169,14 @@ const userRegistration = AsyncHandler(async (req, res, next) => {
       //delete already existing image if user reregister(when user not verified)
       await cloudinary.v2.uploader.destroy(isUserExist.avatar.public_id);
 
-      console.log("✅ Generating verification code...");
+      // console.log("✅ Generating verification code...");
       const verificationCode = await isUserExist.generateVerificationCode();
-      console.log(verificationCode);
+      // console.log(verificationCode);
 
       await isUserExist.save({ validateBeforeSave: false });
-      console.log(isUserExist.verificationCode);
+      // console.log(isUserExist.verificationCode);
 
-      console.log("✅ Sending verification code...");
+      // console.log("✅ Sending verification code...");
       sendVerificationCode(verificationCode, email, phone, res, name, next);
 
       return res
@@ -202,31 +202,31 @@ const userRegistration = AsyncHandler(async (req, res, next) => {
       },
     };
 
-    console.log("✅ Creating new user...");
+    // console.log("✅ Creating new user...");
     //Creating new user
     const user = await User.create(userData);
-    console.log(user);
+    // console.log(user);
 
     //check user created or not
     if (!user) {
-      console.log("❌ Failed to create user.");
+      // console.log("❌ Failed to create user.");
       return next(
         new ApiError(`Internal Server Error while creating new user...!`, 500)
       );
     }
 
-    console.log("✅ Generating verification code for new user...");
+    // console.log("✅ Generating verification code for new user...");
     // 7=generate verification code of 5 digits comes from userModel
     const verificationCode = await user.generateVerificationCode();
 
     await user.save();
-    console.log(user.verificationCode);
+    // console.log(user.verificationCode);
 
     // 8=send verification code via node mailer with html template
-    console.log("✅ Sending verification email...");
+    // console.log("✅ Sending verification email...");
     sendVerificationCode(verificationCode, email, phone, res, name);
   } catch (error) {
-    console.log("register error", error.message);
+    // console.log("register error", error.message);
 
     return next(new ApiError(`${error.message}`, 500));
   }
@@ -274,7 +274,7 @@ export const verifyOTP = AsyncHandler(async (req, res, next) => {
     // console.log(user);
 
     //if opt is correct mean otp match with user database otp
-    if (user.verificationCode && user.verificationCode !== Number(otp)) {
+    if (user?.verificationCode !== Number(otp)) {
       return next(new ApiError("Invalid OTP", 400));
     }
 
