@@ -391,6 +391,7 @@ const userLogin = AsyncHandler(async (req, res, next) => {
     ),
     httpOnly: true,
     secure: true,
+    path: "/",
   };
 
   //creating cookie to send
@@ -404,14 +405,28 @@ const userLogin = AsyncHandler(async (req, res, next) => {
 
 //user logout
 const userLogout = AsyncHandler(async (req, res, next) => {
-  res.cookie("accessToken", null, {
-    httpOnly: true,
-    expires: new Date(Date.now()),
-  });
+  try {
+    res.cookie("accessToken", null, {
+      httpOnly: true,
+      secure: true, // Important for HTTPS
+      path: "/",
+      expires: new Date(Date.now()),
+    });
+    // res.clearCookie("accessToken", {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "strict",
+    // });
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, "SuccessFully logged out...!"));
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "SuccessFully logged out...!"));
+  } catch (error) {
+    console.log("Logout error", error);
+    return next(
+      new ApiError("Something went wrong while logging out...!", 500)
+    );
+  }
 });
 
 //getting user details

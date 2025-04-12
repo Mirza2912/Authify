@@ -15,10 +15,14 @@ const userSlice = createSlice({
     isVerified: false, //when user verify the otp now user is authenticated
     isLoading: false,
     error: null,
+    logOutMessage: "",
   },
   reducers: {
     clearError: (state) => {
       return { ...state, error: null };
+    },
+    cleareLogoutMessage: (state) => {
+      return { ...state, logOutMessage: "" };
     },
   },
   extraReducers: (builder) => {
@@ -66,6 +70,7 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.user = null; // Reset user data on logout
         state.isVerified = false; // Reset isVerified to false on logout
+        state.logOutMessage = action.payload; // Store the logout message
       })
       .addCase(userLogOut.rejected, (state, action) => {
         state.isLoading = false;
@@ -76,4 +81,4 @@ const userSlice = createSlice({
 
 // export const { setUser, logout } = userSlice.actions;
 export default userSlice.reducer;
-export const { clearError } = userSlice.actions;
+export const { clearError, cleareLogoutMessage } = userSlice.actions;

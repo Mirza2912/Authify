@@ -85,10 +85,11 @@ export const userLogOut = createAsyncThunk("user/logOut", async () => {
   // console.log(userData);
 
   try {
-    await axios.post("/api/v1/users/logout", userData, config);
+    const { data } = await axios.get("/api/v1/users/logout");
     // console.log(data?.data);
+    // console.log(response);
 
-    // return data?.data;
+    return data?.data;
   } catch (error) {
     return error.response.data?.message || error.message || "Login failed";
   }

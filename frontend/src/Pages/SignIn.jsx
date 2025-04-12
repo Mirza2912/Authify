@@ -10,9 +10,7 @@ const SignIn = () => {
   const Navigate = useNavigate();
 
   //fetching state from redux store
-  const { isLoading, error, isVerified, tempUser, user } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoading, error, isVerified } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -40,8 +38,8 @@ const SignIn = () => {
       toast.error(error); //show error message
       // Dispatch(clearError());
     }
-    if (isVerified) {
-      Navigate("/");
+    if (isVerified === true) {
+      Navigate("/user/profile"); //redirect to user profile page
       toast.success("User logedIn successfully!");
     }
   }, [error, isVerified, Navigate]);

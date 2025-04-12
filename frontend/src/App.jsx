@@ -4,6 +4,9 @@ import SignIn from "./Pages/SignIn";
 import SignUp from "./Pages/SignUp";
 import Navbar from "./Components/Navbar";
 import OptVerification from "./Pages/OptVerification";
+import EditProfile from "./Pages/EditProfile";
+import ChangePassword from "./Pages/ChangePassword";
+import UserProfile from "./Pages/UserProfile";
 
 export default function App() {
   return (
@@ -18,6 +21,9 @@ export default function App() {
             path="/register/otp-verification/:email/:phone"
             element={<OptVerification />}
           />
+          <Route path="/user/profile" element={<UserProfile />} />
+          <Route path="/user/edit-profile" element={<EditProfile />} />
+          <Route path="/user/change-password" element={<ChangePassword />} />
         </Routes>
       </div>
     </BrowserRouter>

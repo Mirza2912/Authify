@@ -41,7 +41,21 @@ const Navbar = () => {
           </li>
 
           {isVerified ? (
-            <></>
+            <li>
+              <NavLink
+                to="/user/profile"
+                className={({ isActive }) =>
+                  `relative  py-1 font-medium transition duration-200
+            ${
+              isActive
+                ? 'text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-full after:bg-primary'
+                : 'text-dark hover:text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-0 after:bg-primaryLight hover:after:w-full after:transition-all after:duration-300'
+            }`
+                }
+              >
+                Profile
+              </NavLink>
+            </li>
           ) : (
             <>
               <li>
@@ -76,51 +90,6 @@ const Navbar = () => {
               </li>
             </>
           )}
-          {/* <li>
-            <NavLink
-              to="/sign-in"
-              className={({ isActive }) =>
-                `relative  py-1 font-medium transition duration-200
-                ${
-                  isActive
-                    ? 'text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-full after:bg-primary'
-                    : 'text-dark hover:text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-0 after:bg-primaryLight hover:after:w-full after:transition-all after:duration-300'
-                }`
-              }
-            >
-              Login
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/sign-up"
-              className={({ isActive }) =>
-                `relative  py-1 font-medium transition duration-200
-                ${
-                  isActive
-                    ? 'text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-full after:bg-primary'
-                    : 'text-dark hover:text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-0 after:bg-primaryLight hover:after:w-full after:transition-all after:duration-300'
-                }`
-              }
-            >
-              Register
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/sign-up"
-              className={({ isActive }) =>
-                `relative  py-1 font-medium transition duration-200
-                ${
-                  isActive
-                    ? 'text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-full after:bg-primary'
-                    : 'text-dark hover:text-primary after:content-[""] after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0 after:h-[2px] after:w-0 after:bg-primaryLight hover:after:w-full after:transition-all after:duration-300'
-                }`
-              }
-            >
-              Logout
-            </NavLink>
-          </li> */}
         </ul>
       </div>
     </nav>
