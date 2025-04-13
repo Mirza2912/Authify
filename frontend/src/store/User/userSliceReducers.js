@@ -46,7 +46,7 @@ export const verifyUser = createAsyncThunk(
       );
 
       //   console.log(data);
-      return data?.data; //returning fetched data
+      return data; //returning fetched data
     } catch (error) {
       // console.log(error.response?.data || error.message);
       return (
@@ -69,9 +69,9 @@ export const userLogin = createAsyncThunk(
         userData,
         config
       );
-      // console.log(data?.data);
+      // console.log(data);
 
-      return data?.data;
+      return data;
     } catch (error) {
       return rejectWithValue(
         error.response.data?.message || error.message || "Login failed"
@@ -91,6 +91,68 @@ export const userLogOut = createAsyncThunk("user/logOut", async () => {
 
     return data?.data;
   } catch (error) {
-    return error.response.data?.message || error.message || "Login failed";
+    return error.response.data?.message || error.message || "LogOut failed";
   }
 });
+
+//For fetching userdetails
+export const loadUser = createAsyncThunk(
+  "user/loadUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get("/api/v1/users/me"); // secure route to get current user
+      // console.log(data);
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response.data.message || error.message || "Could not load user"
+      );
+    }
+  }
+);
+
+export const updateUserProfile = createAsyncThunk(
+  "user/updateProfile",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(
+        "/api/v1/users/me/profile/update",
+        userData,
+        config
+      );
+
+      // console.log(data);
+
+      return data;
+    } catch (error) {
+      console.log(error.response.data);
+      return rejectWithValue(
+        error.response?.data || error.message || "Update failed"
+      );
+    }
+  }
+);
+
+//for update password
+export const changeUserPassword = createAsyncThunk(
+  "user/changePassword",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(
+        "/api/v1/users/me/password/update",
+        userData,
+        config
+      );
+
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.log(error.response.data);
+      return rejectWithValue(
+        error.response?.data || error.message || "Update password failed"
+      );
+    }
+  }
+);

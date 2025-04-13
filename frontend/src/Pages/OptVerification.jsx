@@ -10,7 +10,7 @@ const VerifyOtp = () => {
   const Navigate = useNavigate();
 
   //fetching state from redux store
-  const { isLoading, error, isVerified, tempUser } = useSelector(
+  const { isLoading, error, isVerified, tempUser, user } = useSelector(
     (state) => state.auth
   );
 
@@ -83,7 +83,7 @@ const VerifyOtp = () => {
     //if user already verified
     if (isVerified) {
       Navigate("/");
-      toast.success("User registered and verified successfully");
+      toast.success(user?.message);
     }
   }, [error, tempUser, Navigate, Dispatch, isVerified]);
 

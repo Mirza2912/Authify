@@ -1,7 +1,10 @@
 // src/features/user/userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
+  changeUserPassword,
+  loadUser,
   registerUser,
+  updateUserProfile,
   userLogin,
   userLogOut,
   verifyUser,
@@ -16,13 +19,21 @@ const userSlice = createSlice({
     isLoading: false,
     error: null,
     logOutMessage: "",
+    updateProfileMessage: "",
+    changeUserPasswordMessage: "",
   },
   reducers: {
     clearError: (state) => {
-      return { ...state, error: null };
+      state.error = null;
     },
-    cleareLogoutMessage: (state) => {
-      return { ...state, logOutMessage: "" };
+    clearLogoutMessage: (state) => {
+      state.logOutMessage = "";
+    },
+    cleareUpdateProfileMessage: (state) => {
+      state.updateProfileMessage = "";
+    },
+    clearUserPasswordMessage: (state) => {
+      state.changeUserPasswordMessage = "";
     },
   },
   extraReducers: (builder) => {
@@ -68,17 +79,59 @@ const userSlice = createSlice({
       })
       .addCase(userLogOut.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = null; // Reset user data on logout
-        state.isVerified = false; // Reset isVerified to false on logout
-        state.logOutMessage = action.payload; // Store the logout message
+        state.user = null;
+        state.isVerified = false;
+        state.logOutMessage = action.payload;
       })
       .addCase(userLogOut.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(loadUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loadUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isVerified = true;
+      })
+      .addCase(loadUser.rejected, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.updateProfileMessage = action.payload?.message;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(changeUserPassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(changeUserPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.changeUserPasswordMessage = action.payload?.message;
+      })
+      .addCase(changeUserPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
   },
 });
 
-// export const { setUser, logout } = userSlice.actions;
 export default userSlice.reducer;
-export const { clearError, cleareLogoutMessage } = userSlice.actions;
+export const {
+  clearError,
+  clearLogoutMessage,
+  cleareUpdateProfileMessage,
+  clearUserPasswordMessage,
+} = userSlice.actions;

@@ -420,7 +420,7 @@ const userLogout = AsyncHandler(async (req, res, next) => {
 
     return res
       .status(200)
-      .json(new ApiResponse(200, "SuccessFully logged out...!"));
+      .json(new ApiResponse(200, "User logged out successfully...!"));
   } catch (error) {
     console.log("Logout error", error);
     return next(

@@ -1,18 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { userLogOut } from "../store/User/userSliceReducers.js";
 import { toast } from "react-toastify";
 import { FaUser, FaEnvelope, FaPhone, FaCalendar } from "react-icons/fa";
-import { cleareLogoutMessage } from "../store/User/userSlice.js";
+import { clearError, clearLogoutMessage } from "../store/User/userSlice.js";
 
 const UserProfile = () => {
   const Dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  const { user, isVerified, error, logOutMessage } = useSelector(
+  const { user, error, logOutMessage, isVerified } = useSelector(
     (state) => state.auth
   );
+  // console.log(logOutMessage);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      Dispatch(clearError());
+      Navigate("/sign-in", { replace: true });
+    }
+  }, [error]);
 
   const handleLogout = () => {
     Dispatch(userLogOut());
@@ -32,21 +41,6 @@ const UserProfile = () => {
     toast.error("Account deleted successfully!");
   };
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-    if (!isVerified) {
-      Navigate("/sign-in");
-      //   toast.error("You need to log in to access this page!");
-    }
-    if (logOutMessage) {
-      Navigate("/sign-in");
-      toast.success(logOutMessage);
-      Dispatch(cleareLogoutMessage());
-    }
-  }, [isVerified, Navigate]);
-
   return (
     <section className="flex flex-col lg:flex-row justify-center items-center text-center text-navText bg-gradient-to-br from-primary via-accent to-primaryLight relative min-h-screen">
       {/* Background Overlay */}
@@ -56,7 +50,7 @@ const UserProfile = () => {
         {/* Left Side */}
         <div className="lg:w-1/2 mb-10 lg:mb-0 text-left max-w-xl text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight text-center">
-            Welcome, <span className="text-accent">{user?.name}</span>
+            Welcome, <span className="text-accent">{user?.data?.name}</span>
           </h1>
           <p className="text-lg text-white/80 text-center">
             Manage your profile and personal information.
@@ -68,7 +62,7 @@ const UserProfile = () => {
           {/* Avatar */}
           <div className="flex justify-center mb-6">
             <img
-              src={user?.avatar?.url || "/srs/assets/profile.png"}
+              src={user?.data?.avatar?.url || "/srs/assets/profile.png"}
               alt="User Avatar"
               className="w-32 h-32 rounded-full border-4 border-accent shadow-lg object-cover"
             />
@@ -77,19 +71,20 @@ const UserProfile = () => {
           {/* Info Fields */}
           <div className="space-y-3 text-left">
             <p className="flex items-center gap-3">
-              <FaUser /> <span className="font-medium">Name:</span> {user?.name}
+              <FaUser /> <span className="font-medium">Name:</span>{" "}
+              {user?.data?.name}
             </p>
             <p className="flex items-center gap-3">
               <FaEnvelope /> <span className="font-medium">Email:</span>{" "}
-              {user?.email}
+              {user?.data?.email}
             </p>
             <p className="flex items-center gap-3">
               <FaPhone /> <span className="font-medium">Phone:</span>{" "}
-              {user?.phone}
+              {user?.data?.phone}
             </p>
             <p className="flex items-center gap-3">
               <FaCalendar /> <span className="font-medium">Joined:</span>{" "}
-              {new Date(user?.createdAt).toLocaleDateString()}
+              {new Date(user?.data?.createdAt).toLocaleDateString()}
             </p>
           </div>
 

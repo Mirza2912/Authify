@@ -1,4 +1,11 @@
-import { FaUser, FaEnvelope, FaLock, FaPhone } from "react-icons/fa";
+import {
+  FaUser,
+  FaEnvelope,
+  FaLock,
+  FaPhone,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,14 +17,10 @@ const Register = () => {
   const Dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  //fetching state from redux store
   const { isLoading, error, isVerified, tempUser } = useSelector(
     (state) => state.auth
   );
 
-  // console.log(tempUser && tempUser);
-
-  // State hooks for form data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,13 +28,12 @@ const Register = () => {
     phone: "",
   });
 
-  const [avatar, setAvatar] = useState("/src/assets/profile.jpg"); //default avatar
-  formData.avatar = avatar; //set avatar = avatar mean after upload on cloudinary
-  //for showing images which user select avatar
-  const [preview, setPreview] = useState("/src/assets/profile.jpg");
-  // console.log(formData.avatar);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Handle input change
+  const [avatar, setAvatar] = useState("/src/assets/profile.jpg");
+  formData.avatar = avatar;
+  const [preview, setPreview] = useState("/src/assets/profile.jpg");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -119,6 +121,7 @@ const Register = () => {
                 placeholder="Full Name"
                 value={formData.name}
                 onChange={handleChange}
+                required
                 className="w-full pl-12 pr-4 py-3 rounded-md bg-white/10 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
               />
             </div>
@@ -132,6 +135,7 @@ const Register = () => {
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleChange}
+                required
                 className="w-full pl-12 pr-4 py-3 rounded-md bg-white/10 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
               />
             </div>
@@ -140,13 +144,25 @@ const Register = () => {
             <div className="relative">
               <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 text-lg" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
+                required
                 className="w-full pl-12 pr-4 py-3 rounded-md bg-white/10 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
               />
+              {showPassword ? (
+                <FaEyeSlash
+                  onClick={() => setShowPassword(false)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 cursor-pointer text-lg"
+                />
+              ) : (
+                <FaEye
+                  onClick={() => setShowPassword(true)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-white/60 cursor-pointer text-lg"
+                />
+              )}
             </div>
 
             {/* Phone */}
@@ -158,6 +174,7 @@ const Register = () => {
                 placeholder="Phone Number"
                 value={formData.phone}
                 onChange={handleChange}
+                required
                 className="w-full pl-12 pr-4 py-3 rounded-md bg-white/10 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent transition"
               />
             </div>
