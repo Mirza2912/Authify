@@ -21,6 +21,8 @@ const Register = () => {
     (state) => state.auth
   );
 
+  console.log(tempUser?.data?.email);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -80,9 +82,10 @@ const Register = () => {
     }
 
     if (tempUser) {
+      toast.success(tempUser?.message); //show success message
       //if user is temp then navigate to otp page
       Navigate(
-        `/register/otp-verification/${tempUser.email}/${tempUser.phone}`
+        `/register/otp-verification/${tempUser?.data?.email}/${tempUser?.data?.phone}`
       );
     }
 

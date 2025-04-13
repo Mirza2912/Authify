@@ -12,18 +12,26 @@ import { loadUser } from "./store/User/userSliceReducers";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  cleareResetPasswordMessage,
   cleareUpdateProfileMessage,
+  cleareUserDeleteMessage,
   clearLogoutMessage,
   clearUserPasswordMessage,
 } from "./store/User/userSlice";
 import { toast } from "react-toastify";
+import ForgotPassword from "./Pages/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword";
 
 export default function App() {
   const Dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  const { logOutMessage, updateProfileMessage, changeUserPasswordMessage } =
-    useSelector((state) => state.auth);
+  const {
+    logOutMessage,
+    updateProfileMessage,
+    changeUserPasswordMessage,
+    deleteUserMessage,
+  } = useSelector((state) => state.auth);
   // console.log(updateProfileMessage);
 
   useEffect(() => {
@@ -53,8 +61,21 @@ export default function App() {
       }, 1500);
     }
 
+    if (deleteUserMessage) {
+      toast.success(deleteUserMessage);
+      timeout = setTimeout(() => {
+        Dispatch(cleareUserDeleteMessage());
+        Navigate("/sign-in", { replace: true });
+      }, 1500);
+    }
+
     return () => clearTimeout(timeout);
-  }, [logOutMessage, updateProfileMessage, changeUserPasswordMessage]);
+  }, [
+    logOutMessage,
+    updateProfileMessage,
+    changeUserPasswordMessage,
+    deleteUserMessage,
+  ]);
 
   const isFetchedRef = useRef(false);
 
@@ -75,6 +96,8 @@ export default function App() {
           path="/register/otp-verification/:email/:phone"
           element={<OptVerification />}
         />
+        <Route path="/user/forgot-password" element={<ForgotPassword />} />
+        <Route path="/user/password/reset/:token" element={<ResetPassword />} />
         // Protected Routes
         <Route element={<ProtectedRoute />}>
           <Route path="/user/profile" element={<UserProfile />} />

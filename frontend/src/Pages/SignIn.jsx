@@ -117,15 +117,23 @@ const SignIn = () => {
             </button>
           </form>
 
-          <p className="text-sm text-white/70 mt-6">
-            Don’t have an account?
+          <div className="flex items-center justify-between mt-4 px-2">
+            <p className="text-sm text-white/70">
+              Don’t have an account?
+              <Link
+                to="/sign-up"
+                className="text-accent underline hover:text-white"
+              >
+                Register here
+              </Link>
+            </p>
             <Link
-              to="/sign-up"
-              className="text-accent underline hover:text-white"
+              to="/user/forgot-password"
+              className="text-sm text-nevText hover:underline transition"
             >
-              Register here
+              Forgot Password?
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     </section>

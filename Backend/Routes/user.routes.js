@@ -37,11 +37,9 @@ router.route("/me/profile/update").put(isAuthenticatedUser, updateProfile);
 // for update user password
 router.route("/me/password/update").put(isAuthenticatedUser, updatePassword);
 // for forgot password
-router.route("/me/password/forgot").post(isAuthenticatedUser, forgotPassword);
+router.route("/user/password/forgot").post(forgotPassword);
 // for reset password
-router
-  .route("/me/password/reset:token")
-  .post(isAuthenticatedUser, resetPassword);
+router.route("/user/password/reset/:token").post(resetPassword);
 // for delete account
 router.route("/me/delete/account").delete(isAuthenticatedUser, deleteAccount);
 // for getting all users --->Admin

@@ -22,7 +22,7 @@ export const registerUser = createAsyncThunk(
       );
       //   console.log(data?.data);
 
-      return data?.data;
+      return data;
     } catch (error) {
       return rejectWithValue(
         error.response.data?.message || error.message || "Registration failed"
@@ -145,13 +145,88 @@ export const changeUserPassword = createAsyncThunk(
         config
       );
 
-      console.log(data);
+      // console.log(data);
 
       return data;
     } catch (error) {
-      console.log(error.response.data);
+      // console.log(error.response.data);
       return rejectWithValue(
         error.response?.data || error.message || "Update password failed"
+      );
+    }
+  }
+);
+
+//for forgot password
+export const forgotPassword = createAsyncThunk(
+  "user/forgotPassword",
+  async (email, { rejectWithValue }) => {
+    // console.log(email);
+
+    try {
+      const { data } = await axios.post(
+        "/api/v1/users/user/password/forgot",
+        { email },
+        config
+      );
+
+      // console.log(data);
+
+      return data?.data; //returning fetched data
+    } catch (error) {
+      // console.log(error.response.data);
+      return rejectWithValue(
+        error.response?.data || error.message || "Failed to send reset link"
+      );
+    }
+  }
+);
+
+//for reset password
+export const resetPassword = createAsyncThunk(
+  "user/resetPassword",
+  async (userData, { rejectWithValue }) => {
+    // console.log(userData);
+
+    const newData = {
+      newPassword: userData?.newPassword,
+      confirmPassword: userData?.confirmPassword,
+    };
+    // console.log(newData);
+
+    try {
+      const { data } = await axios.post(
+        `/api/v1/users/user/password/reset/${userData?.token}`,
+        newData,
+        config
+      );
+
+      // console.log(data?.data);
+
+      return data; //returning fetched data
+    } catch (error) {
+      // console.log(error);
+      return rejectWithValue(
+        error.response?.data || error.message || "Failed to send reset link"
+      );
+    }
+  }
+);
+
+//fro user delete permanently
+export const userDelete = createAsyncThunk(
+  "user/userDelete",
+  async (_, { rejectWithValue }) => {
+    try {
+      /*making api call with axios for getting user details from backend */
+      const { data } = await axios.delete("/api/v1/users/me/delete/account");
+
+      // console.log(data); //returning fetched data
+      return data?.message;
+    } catch (error) {
+      // console.log(error.response.data.message);
+      return rejectWithValue(
+        error.response?.data || error.message || "Delete account failed"
       );
     }
   }

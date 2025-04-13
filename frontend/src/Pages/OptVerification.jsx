@@ -63,8 +63,8 @@ const VerifyOtp = () => {
     // console.log("OTP entered:", finalOtp);
     const data = {
       otp: finalOtp,
-      email: tempUser?.email,
-      phone: tempUser?.phone,
+      email: tempUser?.data?.email,
+      phone: tempUser?.data?.phone,
     };
 
     Dispatch(verifyUser(data));
@@ -82,7 +82,7 @@ const VerifyOtp = () => {
 
     //if user already verified
     if (isVerified) {
-      Navigate("/");
+      Navigate("/user/profile", { replace: true }); //redirect to user profile page
       toast.success(user?.message);
     }
   }, [error, tempUser, Navigate, Dispatch, isVerified]);
@@ -105,7 +105,7 @@ const VerifyOtp = () => {
                 placeholder="Email"
                 className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder:text-white/70 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-accent transition-all"
                 required
-                value={tempUser?.email || ""}
+                value={tempUser?.data?.email || ""}
                 readOnly
               />
             </div>
@@ -116,7 +116,7 @@ const VerifyOtp = () => {
                 placeholder="Phone"
                 className="w-full px-4 py-3 rounded-lg bg-white/20 text-white placeholder:text-white/70 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-accent transition-all"
                 required
-                value={tempUser?.phone || ""}
+                value={tempUser?.data?.phone || ""}
                 readOnly
               />
             </div>

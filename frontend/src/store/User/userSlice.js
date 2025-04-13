@@ -2,9 +2,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
   changeUserPassword,
+  forgotPassword,
   loadUser,
   registerUser,
+  resetPassword,
   updateUserProfile,
+  userDelete,
   userLogin,
   userLogOut,
   verifyUser,
@@ -21,6 +24,9 @@ const userSlice = createSlice({
     logOutMessage: "",
     updateProfileMessage: "",
     changeUserPasswordMessage: "",
+    forgotPasswordMessage: "",
+    resetPasswordMessage: "",
+    deleteUserMessage: "",
   },
   reducers: {
     clearError: (state) => {
@@ -34,6 +40,15 @@ const userSlice = createSlice({
     },
     clearUserPasswordMessage: (state) => {
       state.changeUserPasswordMessage = "";
+    },
+    clearForgotPasswordMessage: (state) => {
+      state.forgotPasswordMessage = "";
+    },
+    cleareResetPasswordMessage: (state) => {
+      state.resetPasswordMessage = "";
+    },
+    cleareUserDeleteMessage: (state) => {
+      state.deleteUserMessage = "";
     },
   },
   extraReducers: (builder) => {
@@ -124,6 +139,42 @@ const userSlice = createSlice({
       .addCase(changeUserPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.forgotPasswordMessage = action.payload;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.resetPasswordMessage = action.payload?.message;
+        state.user = action.payload;
+        state.isVerified = true; // Set isVerified to true after successful password reset
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(userDelete.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isVerified = false;
+        state.deleteUserMessage = action.payload;
+      })
+      .addCase(userDelete.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -134,4 +185,7 @@ export const {
   clearLogoutMessage,
   cleareUpdateProfileMessage,
   clearUserPasswordMessage,
+  clearForgotPasswordMessage,
+  cleareResetPasswordMessage,
+  cleareUserDeleteMessage,
 } = userSlice.actions;

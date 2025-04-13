@@ -559,7 +559,7 @@ const updatePassword = AsyncHandler(async (req, res, next) => {
 const deleteAccount = AsyncHandler(async (req, res, next) => {
   //getting user who want to delete account by using req.user._id from middleware
   const user = await User.findByIdAndDelete(req.user._id);
-  console.log(user);
+  // console.log(user);
 
   res.cookie("accessToken", null, {
     httpOnly: true,
@@ -568,12 +568,14 @@ const deleteAccount = AsyncHandler(async (req, res, next) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, "User deleted successfully...!"));
+    .json(new ApiResponse(200, user, "User deleted successfully...!"));
 });
 
 //for forgot password
 const forgotPassword = AsyncHandler(async (req, res, next) => {
   const { email } = req.body;
+  // console.log(email);
+
   try {
     //checking user exist or not
     const user = await User.findOne({
@@ -592,15 +594,14 @@ const forgotPassword = AsyncHandler(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     //making url on which we send email
-    const resetPasswordUrl = `${req.protocol}://${req.get(
-      "host"
-    )}/me/password/reset/${resetPasswordToken}`;
+    const resetPasswordUrl = `${process.env.FRONTEND_URL}/user/password/reset/${resetPasswordToken}`;
+    // console.log(resetPasswordUrl);
 
     //calling sendEmail function to send email with resetPassworUrl
     await sendEmail({
       email,
       subject: "RESET PASSWORD",
-      message: `<p>Click <a href="${resetPasswordUrl}">here</a> to reset your password. This link expires in 10 minutes.\n\nIf you have not requested this email then, please ignore it.</p>`,
+      message: `<p>Click <a href="${resetPasswordUrl}">Reset Password</a> to reset your password. This link expires in 10 minutes.\n\nIf you have not requested this email then, please ignore it.</p>`,
     });
 
     return res
@@ -617,7 +618,11 @@ const forgotPassword = AsyncHandler(async (req, res, next) => {
 //for reset password
 const resetPassword = AsyncHandler(async (req, res, next) => {
   const { token } = req.params;
+  // console.log(token);
+
   const { newPassword, confirmPassword } = req.body;
+  // console.log(newPassword, confirmPassword);
+
   try {
     //first of all check tokenis come or not
     if (!token) {
@@ -638,6 +643,13 @@ const resetPassword = AsyncHandler(async (req, res, next) => {
     //now check passwords given or not
     if (!newPassword || !confirmPassword) {
       return next(new ApiError(`Please fill all fields...!`, 400));
+    }
+
+    //checking password length
+    if (newPassword?.length < 8) {
+      return next(
+        new ApiError(`Password must be at least 8 characters long`, 400)
+      );
     }
 
     //now check passwords are matched or not

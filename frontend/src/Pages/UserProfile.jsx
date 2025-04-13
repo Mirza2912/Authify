@@ -1,27 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { userLogOut } from "../store/User/userSliceReducers.js";
+import { userDelete, userLogOut } from "../store/User/userSliceReducers.js";
 import { toast } from "react-toastify";
 import { FaUser, FaEnvelope, FaPhone, FaCalendar } from "react-icons/fa";
-import { clearError, clearLogoutMessage } from "../store/User/userSlice.js";
+import { clearError } from "../store/User/userSlice.js";
 
 const UserProfile = () => {
   const Dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  const { user, error, logOutMessage, isVerified } = useSelector(
-    (state) => state.auth
-  );
+  const { user, error } = useSelector((state) => state.auth);
   // console.log(logOutMessage);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-      Dispatch(clearError());
-      Navigate("/sign-in", { replace: true });
-    }
-  }, [error]);
 
   const handleLogout = () => {
     Dispatch(userLogOut());
@@ -37,9 +27,15 @@ const UserProfile = () => {
   };
 
   const handleDeleteAccount = () => {
-    // Add delete account logic here
+    Dispatch(userDelete());
     toast.error("Account deleted successfully!");
   };
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      Dispatch(clearError());
+    }
+  }, [error]);
 
   return (
     <section className="flex flex-col lg:flex-row justify-center items-center text-center text-navText bg-gradient-to-br from-primary via-accent to-primaryLight relative min-h-screen">
