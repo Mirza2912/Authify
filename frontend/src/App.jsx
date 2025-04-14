@@ -103,6 +103,7 @@ export default function App() {
           <Route path="/user/edit-profile" element={<EditProfile />} />
           <Route path="/user/change-password" element={<ChangePassword />} />
         </Route>
+        <Route path="*" element={<Navigate to="/sign-in" />} />
       </Routes>
     </div>
   );

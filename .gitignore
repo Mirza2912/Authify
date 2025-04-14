@@ -1,0 +1,72 @@
+# === Node.js Backend ===
+
+# Node modules
+Backend/node_modules/
+
+# Env variables
+Backend/.env
+
+# Logs
+Backend/logs/
+Backend/*.log
+Backend/npm-debug.log*
+
+# Build or dist folders (if using build tools)
+Backend/dist/
+Backend/build/
+
+# Temp files
+Backend/tmp/
+Backend/*.tmp
+
+# IDE and system files
+Backend/.DS_Store
+Backend/.vscode/
+Backend/.idea/
+
+# === React Frontend ===
+
+# Node modules
+frontend/node_modules/
+
+# Env variables
+frontend/.env
+
+# Build output
+frontend/dist/
+frontend/build/
+
+# Cache and temp files
+frontend/.cache/
+frontend/tmp/
+frontend/*.tmp
+
+# IDE and system files
+frontend/.DS_Store
+frontend/.vscode/
+frontend/.idea/
+
+# === Root level ===
+
+# Mac system file
+.DS_Store
+
+# Logs
+*.log
+
+# Dependency folders
+node_modules/
+
+# Env
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage reports (e.g., from testing)
+coverage/
+
+# Production build artifacts (optional, if any)
+build/
+dist/

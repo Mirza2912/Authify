@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   const { user, isVerified } = useSelector((state) => state.auth);
+
   return (
     <section className="h-screen bg-gradient-to-br from-primary via-accent to-primaryLight flex flex-col justify-center items-center text-center text-navText">
       <div className="absolute inset-0 bg-black opacity-30 z-0" />
@@ -11,7 +12,8 @@ const Home = () => {
       <div className="w-full px-6 py-12 relative z-10">
         {isVerified ? (
           <h1 className="text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight">
-            Welcome back, <span className="text-accent">{user?.name}</span>
+            Welcome back,{" "}
+            <span className="text-accent">{user?.data?.name}</span>
           </h1>
         ) : (
           <h1 className="text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight">
