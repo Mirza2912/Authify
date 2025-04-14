@@ -140,7 +140,7 @@ const VerifyOtp = () => {
               type="submit"
               disabled={isLoading}
               className={`bg-accent cursor-pointer text-nevText text-sm py-3 px-6 rounded-full w-full font-semibold hover:bg-primary transition-all hover:text-accent ${
-                isLoading && "opacity-50"
+                isLoading && "opacity-50 hover:cursor-not-allowed"
               }`}
             >
               {isLoading ? "Verifying..." : "Verify OTP"}

@@ -110,7 +110,7 @@ const SignIn = () => {
               type="submit"
               disabled={isLoading}
               className={`w-full py-3 bg-accent text-nevText rounded-md font-semibold text-sm transition hover:bg-primary hover:scale-105 shadow-lg hover:text-accent cursor-pointer ${
-                isLoading && "opacity-50"
+                isLoading && "opacity-50 hover:cursor-not-allowed"
               }`}
             >
               {isLoading ? "Loading..." : "Login"}

@@ -83,7 +83,7 @@ async function sendVerificationCode(
     //sending response
     return res
       .status(200)
-      .json(new ApiResponse(200, data, `Verification code sent to ${name}`));
+      .json(new ApiResponse(200, data, `Verification code sent to ${email}`));
   } catch (error) {
     // console.error("❌ Error in sendVerificationCode:", error);
     return next(new ApiError("Server error.Please try later...!"));
@@ -560,6 +560,15 @@ const deleteAccount = AsyncHandler(async (req, res, next) => {
   //getting user who want to delete account by using req.user._id from middleware
   const user = await User.findByIdAndDelete(req.user._id);
   // console.log(user);
+  if (!user) {
+    return next(new ApiError(`User not found...!`, 404));
+  }
+  console.log(req.body);
+
+  //destroy old image
+  if (req.body.oldAvatarId) {
+    await cloudinary.v2.uploader.destroy(req.body.oldAvatarId);
+  }
 
   res.cookie("accessToken", null, {
     httpOnly: true,

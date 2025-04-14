@@ -21,7 +21,7 @@ const Register = () => {
     (state) => state.auth
   );
 
-  console.log(tempUser?.data?.email);
+  // console.log(tempUser?.data?.email);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -83,7 +83,6 @@ const Register = () => {
 
     if (tempUser) {
       toast.success(tempUser?.message); //show success message
-      //if user is temp then navigate to otp page
       Navigate(
         `/register/otp-verification/${tempUser?.data?.email}/${tempUser?.data?.phone}`
       );
@@ -174,7 +173,7 @@ const Register = () => {
               <input
                 type="text"
                 name="phone"
-                placeholder="Phone Number"
+                placeholder="eg. +923xxxxxxxxx or 0300xxxxxxx"
                 value={formData.phone}
                 onChange={handleChange}
                 required
@@ -213,7 +212,7 @@ const Register = () => {
               type="submit"
               disabled={isLoading}
               className={`w-full py-3 text-sm bg-accent text-nevText rounded-md font-semibold  transition hover:bg-primary hover:scale-105 shadow-lg hover:text-accent hover:cursor-pointer ${
-                isLoading && "opacity-50"
+                isLoading && "opacity-50 hover:cursor-not-allowed"
               }`}
             >
               {isLoading && isLoading === true ? "Registering..." : "Register"}

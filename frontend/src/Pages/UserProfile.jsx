@@ -12,7 +12,9 @@ const UserProfile = () => {
 
   const { user, error } = useSelector((state) => state.auth);
   // console.log(logOutMessage);
-
+  const userImageId = {
+    oldAvatarId: user?.data?.avatar?.public_id,
+  };
   const handleLogout = () => {
     Dispatch(userLogOut());
   };
@@ -27,7 +29,7 @@ const UserProfile = () => {
   };
 
   const handleDeleteAccount = () => {
-    Dispatch(userDelete());
+    Dispatch(userDelete(userImageId));
     toast.error("Account deleted successfully!");
   };
   useEffect(() => {

@@ -216,10 +216,16 @@ export const resetPassword = createAsyncThunk(
 //fro user delete permanently
 export const userDelete = createAsyncThunk(
   "user/userDelete",
-  async (_, { rejectWithValue }) => {
+  async (imageId, { rejectWithValue }) => {
+    // console.log(imageId);
+
     try {
       /*making api call with axios for getting user details from backend */
-      const { data } = await axios.delete("/api/v1/users/me/delete/account");
+      const { data } = await axios.delete(
+        "/api/v1/users/me/delete/account",
+        imageId,
+        config
+      );
 
       // console.log(data); //returning fetched data
       return data?.message;

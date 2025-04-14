@@ -7,7 +7,7 @@ import fileUpload from "express-fileupload";
 
 // cors options means who can access our backend from frontend
 const corsOptions = {
-  origin: process.env.ORIGIN,
+  origin: process.env.FRONTEND_UR,
   methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
   credentials: true,
 };

@@ -167,7 +167,7 @@ const EditProfile = () => {
               type="submit"
               disabled={isLoading}
               className={`w-full py-3 text-sm bg-accent text-nevText rounded-md font-semibold  transition hover:bg-primary hover:scale-105 shadow-lg hover:text-accent hover:cursor-pointer ${
-                isLoading && "opacity-50"
+                isLoading && "opacity-50 hover:cursor-not-allowed"
               }`}
             >
               {isLoading && isLoading === true ? "Saving..." : "Save Changes"}

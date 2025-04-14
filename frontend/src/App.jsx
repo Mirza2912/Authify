@@ -12,7 +12,6 @@ import { loadUser } from "./store/User/userSliceReducers";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  cleareResetPasswordMessage,
   cleareUpdateProfileMessage,
   cleareUserDeleteMessage,
   clearLogoutMessage,
