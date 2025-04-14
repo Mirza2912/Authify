@@ -603,7 +603,9 @@ const forgotPassword = AsyncHandler(async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     //making url on which we send email
-    const resetPasswordUrl = `${process.env.FRONTEND_URL}/user/password/reset/${resetPasswordToken}`;
+    const resetPasswordUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/user/password/reset/${resetPasswordToken}`;
     // console.log(resetPasswordUrl);
 
     //calling sendEmail function to send email with resetPassworUrl
