@@ -12,7 +12,7 @@ process.on("uncaughtException", (err) => {
 
 //Providing env data
 dotenv.config({
-  path: ".env",
+  path: "/Backend/.env",
 });
 
 //Calling database connection method
