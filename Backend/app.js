@@ -12,7 +12,7 @@ const corsOptions = {
   credentials: true,
 };
 
-const _dirname = path.resolve();
+// const _dirname = path.resolve();
 app.use(cors(corsOptions));
 
 app.use(express.json({ limit: "50mb" }));
@@ -28,10 +28,10 @@ import path from "path";
 //For Users
 app.use("/api/v1/users", userRouter);
 
-app.use(express.static(path.join(_dirname, "/frontend/dist")));
-app.get("*", (_, res) => {
-  res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
-});
+// app.use(express.static(path.join(_dirname, "/frontend/dist")));
+// app.get("*", (_, res) => {
+//   res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
+// });
 
 //Using error() middleware for throwing ApiError
 app.use(error);
