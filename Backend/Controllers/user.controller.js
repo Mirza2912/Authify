@@ -1,5 +1,5 @@
 import { AsyncHandler } from "../utils/AsyncHandler.js";
-import { ApiError } from "../utils/ApiError.js";
+import { ApiError } from "../Utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import cloudinary from "cloudinary";
 import { sendEmail } from "../utils/SendEmail.js";
