@@ -54,13 +54,7 @@ authify/
 
 ---
 
-## 📸 Screenshots
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/0a38a572-6c65-470c-b51d-df18237ed1a5
-" width="45%" />
-    <img src="https://github.com/user-attachments/assets/0a38a572-6c65-470c-b51d-df18237ed1a5
-" width="45%" />
-</p>
+
 
 
 ---
