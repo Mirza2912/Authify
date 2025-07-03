@@ -53,9 +53,8 @@ authify/
 ---
 
 ## 📸 Screenshots
+![Uploading Screenshot (11).png…]()
 
-> *(Add real screenshots here for better impact)*  
-> Example: Registration page, email verification screen, profile page, etc.
 
 ---
 
