@@ -53,7 +53,8 @@ authify/
 ---
 
 ## 📸 Screenshots
-![Uploading Screenshot (11).png…]()
+![Register Page](![Screenshot (12)](https://github.com/user-attachments/assets/ea9dc142-b1a8-4e74-9aec-0d70e8a57e20)
+)
 
 
 ---
