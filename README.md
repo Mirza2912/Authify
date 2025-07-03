@@ -2,7 +2,7 @@
 
 A modern, secure, and complete authentication system built with the **MERN stack** (MongoDB, Express, React, Node.js). Authify provides all essential user auth features — including email verification, profile management, and account deletion — in a clean, scalable structure.
 
-![Authify Banner](https://via.placeholder.com/1000x300?text=Authify+MERN+Auth+App) <!-- Replace with your banner image -->
+![Authify Banner](https://authify-ten.vercel.app/) <!-- Replace with your banner image -->
 
 ---
 
