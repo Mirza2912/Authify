@@ -3,8 +3,7 @@
 A modern, secure, and complete authentication system built with the **MERN stack** (MongoDB, Express, React, Node.js). Authify provides all essential user auth features — including email verification, profile management, and account deletion — in a clean, scalable structure.
 
 <p align="center">
-  <img src="[./assets/register.png](https://github.com/user-attachments/assets/74a1166e-9992-49d9-84c3-f907390d5f43)" width="45%" />
-  <img src="https://github.com/user-attachments/assets/74a1166e-9992-49d9-84c3-f907390d5f43" width="45%" />
+  <img src="[./assets/register.png](https://github.com/user-attachments/assets/74a1166e-9992-49d9-84c3-f907390d5f43)" width="100%" />
 </p>
 
 
